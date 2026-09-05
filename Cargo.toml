@@ -1,0 +1,31 @@
+[package]
+name = "jpreprocess-wasm"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.86.0"
+authors = ["philMorel"]
+description = "WebAssembly bindings for jpreprocess with bundled NAIST-JDIC."
+license = "MIT"
+repository = "https://github.com/philMorel/jpreprocess-wasm"
+readme = "README.md"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+jpreprocess = { version = "0.15.0", features = ["naist-jdic"] }
+jpreprocess-njd = "0.15.0"
+js-sys = "0.3.104"
+serde = { version = "1", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+wasm-bindgen = "0.2.127"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false

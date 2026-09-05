@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  RUST_VERSION: "1.86.0"
+  WASM_PACK_VERSION: "0.13.1"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          targets: wasm32-unknown-unknown
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.1"
+
+      - name: Install wasm-pack
+        run: cargo install wasm-pack --version "${WASM_PACK_VERSION}" --locked
+
+      - name: Cargo tests
+        run: cargo test --locked
+
+      - name: wasm32 release build
+        run: cargo build --locked --release --target wasm32-unknown-unknown
+
+      - name: Build web package
+        run: wasm-pack build --release --target web --out-dir pkg
+
+      - name: Generated package smoke test
+        run: npm test

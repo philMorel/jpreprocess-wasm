@@ -1,0 +1,26 @@
+{
+  "name": "jpreprocess-wasm",
+  "version": "0.1.0",
+  "description": "WebAssembly bindings for jpreprocess with bundled NAIST-JDIC.",
+  "license": "MIT",
+  "repository": "github:philMorel/jpreprocess-wasm",
+  "type": "module",
+  "types": "types.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types.d.ts",
+      "import": "./pkg/jpreprocess_wasm.js"
+    }
+  },
+  "scripts": {
+    "build": "wasm-pack build --target web --release --out-dir pkg",
+    "test": "node tests/smoke.mjs"
+  },
+  "files": [
+    "pkg",
+    "README.md",
+    "types.d.ts",
+    "LICENSE",
+    "THIRD_PARTY_LICENSES.md"
+  ]
+}
