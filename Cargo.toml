@@ -2,7 +2,7 @@
 name = "jpreprocess-wasm"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.86.0"
+rust-version = "1.88.0"
 authors = ["philMorel"]
 description = "WebAssembly bindings for jpreprocess with bundled NAIST-JDIC."
 license = "MIT"
