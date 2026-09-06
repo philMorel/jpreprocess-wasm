@@ -43,7 +43,12 @@ jobs:
           cp pkg/jpreprocess_wasm_bg.wasm release/jpreprocess_wasm_bg.wasm
           cp pkg/jpreprocess_wasm.js release/jpreprocess_wasm.js
           cp pkg/jpreprocess_wasm.d.ts release/jpreprocess_wasm.d.ts
-          sha256sum release/jpreprocess_wasm_bg.wasm release/jpreprocess_wasm.js release/jpreprocess_wasm.d.ts > release/SHA256SUMS
+          gzip -9 -n -c release/jpreprocess_wasm_bg.wasm \
+            > release/jpreprocess_wasm_bg.wasm.gz
+          gzip -t release/jpreprocess_wasm_bg.wasm.gz
+          gzip -dc release/jpreprocess_wasm_bg.wasm.gz \
+            | cmp - release/jpreprocess_wasm_bg.wasm
+          sha256sum release/jpreprocess_wasm_bg.wasm release/jpreprocess_wasm_bg.wasm.gz release/jpreprocess_wasm.js release/jpreprocess_wasm.d.ts > release/SHA256SUMS
 
       - name: Create GitHub release and upload assets
         env:
@@ -51,6 +56,7 @@ jobs:
         run: |
           gh release create "${GITHUB_REF_NAME}" \
             release/jpreprocess_wasm_bg.wasm \
+            release/jpreprocess_wasm_bg.wasm.gz \
             release/jpreprocess_wasm.js \
             release/jpreprocess_wasm.d.ts \
             release/SHA256SUMS \
